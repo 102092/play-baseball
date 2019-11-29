@@ -1,7 +1,7 @@
 # play-baseball
 
 - 언어 : Java (openjdk 12.0.2)
-- IDE : VisualStudioCode
+- IDE : VisualStudioCode, Eclipse
 - 운영체제 : Mac
 
 
@@ -21,4 +21,19 @@
 - (4), (5) 시 어떤 정확히 출력
   - `                System.out.println("3 스트라이크!");`
   - `System.out.println("4 볼!");`
+
+
+
+## step2
+
+### 클린 코딩
+
+- 함수 크기 15줄 이하
+- 들여 쓰기 최대 3단계
+
+
+
+### 요구 사항
+
+
 
