@@ -1,4 +1,4 @@
-package com.baseball02;
+package com.baseball02.model;
 
 public class TeamData {
     private String teamName;

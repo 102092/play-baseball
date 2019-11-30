@@ -13,11 +13,15 @@ public class Temp {
 		double outProbability = 0.100;
 
 		double d = Double.parseDouble(String.format("%.3f",r.nextDouble()));
+		int temp = r.nextInt(4) + 1;
 
 		System.out.println("hit " + hitProbability);
 		System.out.println("sb " + sbProbability);
 		System.out.println("random " + d);
-
+		System.out.println(temp);
+		
+		double ss = 0.134;
+		System.out.println(String.valueOf(ss).length());
 
 	}
 
