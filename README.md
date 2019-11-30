@@ -1,7 +1,7 @@
 # play-baseball
 
 - 언어 : Java (openjdk 12.0.2)
-- IDE : VisualStudioCode, Eclipse
+- IDE : Eclipse
 - 운영체제 : Mac
 
 

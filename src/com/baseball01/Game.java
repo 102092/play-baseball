@@ -53,7 +53,7 @@ public class Game {
 				ball = 0;
 			}
 
-			int random = r.nextInt(4) + 1; // 1~4
+			int random = r.nextInt(5) + 1; // 1~4
 
 			switch (random) {
 
