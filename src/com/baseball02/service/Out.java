@@ -2,7 +2,7 @@ package com.baseball02.service;
 
 import com.baseball02.model.TeamData;
 
-public class PrintData implements PrintAction {
+public class Out implements OutAction {
 
 	@Override
 	public void selectMessage() {

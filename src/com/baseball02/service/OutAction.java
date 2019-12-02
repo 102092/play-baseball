@@ -2,7 +2,7 @@ package com.baseball02.service;
 
 import com.baseball02.model.TeamData;
 
-public interface PrintAction {
+public interface OutAction {
 
 	void selectMessage();
 	void closeMessage();

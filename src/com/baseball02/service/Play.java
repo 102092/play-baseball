@@ -8,7 +8,7 @@ import com.baseball02.model.TeamData;
 public class Play implements PlayAction {
 
 	@Override
-	public void set(TeamData t1, TeamData t2, int playerNumber) {
+	public void setData(TeamData t1, TeamData t2, int playerNumber) {
 
 		String AteamName = t1.getTeamName();
 		String BteamName = t2.getTeamName();
@@ -48,7 +48,7 @@ public class Play implements PlayAction {
 				break;
 
 		}
-		end(AteamName, BteamName, AteamPoints, BteamPoints);
+		endGame(AteamName, BteamName, AteamPoints, BteamPoints);
 
 	}
 
@@ -237,7 +237,7 @@ public class Play implements PlayAction {
 	}
 
 	@Override
-	public void end(String ateamName, String bteamName, int ateamPoints, int bteamPoints) {
+	public void endGame(String ateamName, String bteamName, int ateamPoints, int bteamPoints) {
 
 		System.out.println("경기 종료");
 		System.out.println();

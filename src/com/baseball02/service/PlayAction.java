@@ -5,9 +5,9 @@ import com.baseball02.model.TeamData;
 
 public interface PlayAction {
 	
-	void set(TeamData t1, TeamData t2, int playerNumber);
+	void setData(TeamData t1, TeamData t2, int playerNumber);
 	int play(String teamName, String[] playerNames, double[] playerBAs, int playerNumber);
 	int doBatting(String[] playerNames, double[] playerBAs, Score score, int playerNumber);
 	int rollDice(double ba);
-	void end(String ateamName, String bteamName, int ateamPoints, int bteamPoints);
+	void endGame(String ateamName, String bteamName, int ateamPoints, int bteamPoints);
 }
