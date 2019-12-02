@@ -2,6 +2,8 @@ package com.baseball02.service;
 
 import java.util.Random;
 
+import com.baseball02.model.Board;
+import com.baseball02.model.BoardCount;
 import com.baseball02.model.Score;
 import com.baseball02.model.TeamData;
 
@@ -19,8 +21,13 @@ public class Play implements PlayAction {
 		double[] AplayerBAs = t1.getPlayerBA();
 		double[] BplayerBAs = t2.getPlayerBA();
 
-		int AteamPoints = 0;
-		int BteamPoints = 0;
+//		int AteamPoints = 0;
+//		int BteamPoints = 0;
+
+		BoardCount t1Counts = new BoardCount(0, 0, 0, 0);
+		BoardCount t2Counts = new BoardCount(0, 0, 0, 0);
+
+		Board board = new Board(AteamName, BteamName, AplayerNames, BplayerNames, null, t1Counts, t2Counts);
 
 		boolean flag = false;
 
@@ -32,42 +39,59 @@ public class Play implements PlayAction {
 			if (flag == false) {
 				System.out.println(count + "초 " + AteamName + " 공격 ");
 				System.out.println();
-				AteamPoints += play(AteamName, AplayerNames, AplayerBAs, playerNumber);
+				board.setT1Counts(play(AteamName, AplayerNames, AplayerBAs, playerNumber, board.getT1Counts()));
 				flag = true;
+
+				System.out.println("t1점수: " + board.getT1Counts().getPoints());
+				System.out.println("t1투구: " + board.getT1Counts().getPitchings());
+				System.out.println("t1삼진: " + board.getT1Counts().getThreeOuts());
+				System.out.println("t1안타: " + board.getT1Counts().getHits());
 			}
 
 			if (flag == true) {
 				System.out.println(count + "말 " + BteamName + " 공격 ");
 				System.out.println();
-				BteamPoints += play(BteamName, BplayerNames, BplayerBAs, playerNumber);
+				board.setT2Counts(play(BteamName, BplayerNames, BplayerBAs, playerNumber, board.getT2Counts()));
 				flag = false;
 				count++;
+
+				System.out.println("t2점수: " + board.getT2Counts().getPoints());
+				System.out.println("t2투구: " + board.getT2Counts().getPitchings());
+				System.out.println("t2삼진: " + board.getT2Counts().getThreeOuts());
+				System.out.println("t2안타: " + board.getT2Counts().getHits());
+
 			}
 
-			if (count == 2)
+			if (count == 3)
 				break;
 
 		}
-		endGame(AteamName, BteamName, AteamPoints, BteamPoints);
+//		endGame(AteamName, BteamName, AteamPoints, BteamPoints);
 
 	}
 
 	@Override
-	public int play(String teamName, String[] playerNames, double[] playerBAs, int playerNumber) {
+	public BoardCount play(String teamName, String[] playerNames, double[] playerBAs, int playerNumber,
+			BoardCount boardCount) {
 
 		Score score = new Score(0, 0, 0, 0, 0);
-		int points = doBatting(playerNames, playerBAs, score, playerNumber);
-		return points;
+		BoardCount bc = doBatting(playerNames, playerBAs, score, playerNumber, boardCount);
+		return bc;
 
 	}
 
 	@Override
-	public int doBatting(String[] playerNames, double[] playerBAs, Score score, int playerNumber) {
+	public BoardCount doBatting(String[] playerNames, double[] playerBAs, Score score, int playerNumber,
+			BoardCount boardCount) {
 		int strike = score.getStrike();
 		int ball = score.getBall();
 		int out = score.getOut();
 		int hit = score.getHit();
-		int point = score.getPoint();
+
+		int point = boardCount.getPoints();
+		int pitchings = boardCount.getPitchings();
+		int threeOuts = boardCount.getThreeOuts();
+		int hits = boardCount.getHits();
 
 		int nextPlayer = 0;
 
@@ -89,6 +113,7 @@ public class Play implements PlayAction {
 			case 1:
 				// strike
 				strike++;
+				pitchings++;
 				System.out.println("스트라이크!");
 				System.out.println(strike + "S " + ball + "B " + out + "O");
 				System.out.println();
@@ -97,6 +122,7 @@ public class Play implements PlayAction {
 			case 2:
 				// ball
 				ball++;
+				pitchings++;
 				System.out.println("볼!");
 				System.out.println(strike + "S " + ball + "B " + out + "O");
 				System.out.println();
@@ -106,6 +132,7 @@ public class Play implements PlayAction {
 				// out
 				if (out < 2) {
 					out++;
+					pitchings++;
 					System.out.println("아웃! 다음 타자가 타석에 입장했습니다");
 					strike = 0;
 					ball = 0;
@@ -116,6 +143,7 @@ public class Play implements PlayAction {
 
 				} else {
 					out++;
+					pitchings++;
 					System.out.println("아웃!");
 					strike = 0;
 					ball = 0;
@@ -128,6 +156,8 @@ public class Play implements PlayAction {
 			case 4:
 				// hit
 				hit++;
+				pitchings++;
+				hits++;
 				System.out.println("안타! 다음 타자가 타석에 입장했습니다");
 				strike = 0;
 				ball = 0;
@@ -139,6 +169,7 @@ public class Play implements PlayAction {
 			}
 
 			if (strike == 3) {
+				threeOuts++;
 				out++;
 
 				if (out == 3) {
@@ -179,7 +210,10 @@ public class Play implements PlayAction {
 
 		}
 
-		return point;
+		BoardCount bc = new BoardCount(point, pitchings, threeOuts, hits);
+
+		// return point;
+		return bc;
 	}
 
 	@Override

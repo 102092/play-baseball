@@ -1,5 +1,7 @@
 package com.baseball02.service;
 
+import com.baseball02.model.Board;
+import com.baseball02.model.Score;
 import com.baseball02.model.TeamData;
 
 public class Out implements OutAction {
@@ -40,6 +42,20 @@ public class Out implements OutAction {
 		}
 		System.out.println();
 
+	}
+
+	@Override
+	public void printBoard() {
+		
+		System.out.println("------------------------------");
+		System.out.println("|"+"/t"+"1 2 3 4 5 6  | TOT"+"/t"+"|");
+		System.out.println("|"+"Mouse  "+"0 0 0 0 0 0  | 0"+"/t+"+"|");
+		System.out.println("|"+"Cat    "+"0 0 0 0 0 0  | 0"+"/t+"+"|");
+		System.out.println("|"+"/t/t/t/t/t"+"|");
+		System.out.println("|"+"Mouse"+"/t/t/t"+"Cats"+"|");
+		
+		
+		
 	}
 
 }

@@ -8,4 +8,5 @@ public interface OutAction {
 	void closeMessage();
 	void errorMessage();
 	void printTeamData(TeamData td, int playerNumber);
+	void printBoard();
 }
