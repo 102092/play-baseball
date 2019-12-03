@@ -1,14 +1,16 @@
 package com.baseball02.util;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.Scanner;
 
 public class DataInputUtil {
 
-	public static String getInput() throws IOException {
-		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
-		String input = bf.readLine();
+	public static String getInput() {
+//		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+//		String input = bf.readLine();
+//		return input;
+		
+		Scanner sc = new Scanner(System.in);
+		String input = sc.nextLine();
 		return input;
 	}
 	

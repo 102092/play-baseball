@@ -4,16 +4,14 @@ public class Score {
 
 	private int strike;
 	private int ball;
-	private int hit;
 	private int out;
-	private int point;
+	private int hit;
 
-	public Score(int strike, int ball, int hit, int out, int point) {
+	public Score(int strike, int ball, int out, int hit) {
 		this.strike = strike;
 		this.ball = ball;
 		this.hit = hit;
 		this.out = out;
-		this.point = point;
 	}
 
 	public int getStrike() {
@@ -30,10 +28,6 @@ public class Score {
 
 	public int getOut() {
 		return out;
-	}
-
-	public int getPoint() {
-		return point;
 	}
 
 }

@@ -6,6 +6,16 @@ import com.baseball02.model.TeamData;
 
 public class Out implements OutAction {
 
+	static int[] t1Points = { 0, 0, 0, 0, 0, 0 };
+	static int[] t2Points = { 0, 0, 0, 0, 0, 0 };
+
+	@Override
+	public void printSBO(int strike, int ball, int out) {
+		System.out.println(strike + "S " + ball + "B " + out + "O");
+		System.out.println();
+
+	}
+
 	@Override
 	public void selectMessage() {
 		System.out.println("신나는 야구시합");
@@ -45,17 +55,61 @@ public class Out implements OutAction {
 	}
 
 	@Override
-	public void printBoard() {
-		
-		System.out.println("------------------------------");
-		System.out.println("|"+"/t"+"1 2 3 4 5 6  | TOT"+"/t"+"|");
-		System.out.println("|"+"Mouse  "+"0 0 0 0 0 0  | 0"+"/t+"+"|");
-		System.out.println("|"+"Cat    "+"0 0 0 0 0 0  | 0"+"/t+"+"|");
-		System.out.println("|"+"/t/t/t/t/t"+"|");
-		System.out.println("|"+"Mouse"+"/t/t/t"+"Cats"+"|");
-		
-		
-		
+	public void printBoard(Board b, Score s, int c, boolean flag) {
+
+		if (flag == false) {
+			t1Points[c - 1] = b.getT1Counts().getPoints();
+
+		} else {
+			t2Points[c - 1] = b.getT2Counts().getPoints();
+		}
+
+		int t1Sum = 0;
+		int t2Sum = 0;
+
+		for (int i = 0; i < t1Points.length; i++) {
+			t1Sum += t1Points[i];
+		}
+
+		for (int i = 0; i < t2Points.length; i++) {
+			t2Sum += t2Points[i];
+		}
+
+		System.out.println("+--------------------------------+");
+		System.out.println("| \t 1 2 3 4 5 6 | TOT");
+		System.out.print("| " + b.getT1().getTeamName() + "\t ");
+		for (int i = 0; i < t1Points.length; i++) {
+			System.out.print(t1Points[i] + " ");
+		}
+		System.out.println("|  " + t1Sum);
+
+		System.out.print("| " + b.getT2().getTeamName() + "\t ");
+		for (int i = 0; i < t2Points.length; i++) {
+			System.out.print(t2Points[i] + " ");
+		}
+		System.out.println("|  " + t2Sum);
+
+		System.out.println("|  ");
+		System.out.println("|  " + b.getT1().getTeamName() + "\t\t" + b.getT2().getTeamName());
+
+		for (int i = 0; i < b.getT1().getPlayerName().length; i++) {
+			System.out.println("| " + (i + 1) + ". " + b.getT1().getPlayerName()[i] + "\t\t" + (i + 1) + ". "
+					+ b.getT2().getPlayerName()[i]);
+		}
+
+		System.out.println("|\t" + "  S " + s.getStrike());
+		System.out.println("|\t" + "  B " + s.getBall());
+		System.out.println("|\t" + "  O " + s.getOut());
+
+		System.out.println(
+				"| 투구: " + b.getT1Counts().getPitchings() + "        " + " 투구: " + b.getT2Counts().getPitchings());
+		System.out.println(
+				"| 삼진: " + b.getT1Counts().getThreeOuts() + "        " + " 삼진: " + b.getT2Counts().getThreeOuts());
+		System.out.println("| 안타: " + b.getT1Counts().getHits() + "        " + " 안타: " + b.getT2Counts().getHits());
+
+		System.out.println("+--------------------------------+");
+		System.out.println();
+
 	}
 
 }

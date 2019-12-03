@@ -1,20 +1,16 @@
 package com.baseball02.model;
 
 public class BoardCount {
-	private int points;
 	private int pitchings;
 	private int threeOuts;
 	private int hits;
+	private int points;
 
-	public BoardCount(int points, int pitchings, int threeOuts, int hits) {
-		this.points = points;
+	public BoardCount(int pitchings, int threeOuts, int hits, int points) {
 		this.pitchings = pitchings;
 		this.threeOuts = threeOuts;
 		this.hits = hits;
-	}
-
-	public int getPoints() {
-		return points;
+		this.points = points;
 	}
 
 	public int getPitchings() {
@@ -27,6 +23,10 @@ public class BoardCount {
 
 	public int getHits() {
 		return hits;
+	}
+
+	public int getPoints() {
+		return points;
 	}
 
 }

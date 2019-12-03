@@ -6,8 +6,11 @@ import com.baseball02.model.Board;
 import com.baseball02.model.BoardCount;
 import com.baseball02.model.Score;
 import com.baseball02.model.TeamData;
+import com.baseball02.util.DataInputUtil;
 
 public class Play implements PlayAction {
+
+	private int skip = 0;
 
 	@Override
 	public void setData(TeamData t1, TeamData t2, int playerNumber) {
@@ -15,19 +18,13 @@ public class Play implements PlayAction {
 		String AteamName = t1.getTeamName();
 		String BteamName = t2.getTeamName();
 
-		String[] AplayerNames = t1.getPlayerName();
-		String[] BplayerNames = t2.getPlayerName();
-
-		double[] AplayerBAs = t1.getPlayerBA();
-		double[] BplayerBAs = t2.getPlayerBA();
-
-//		int AteamPoints = 0;
-//		int BteamPoints = 0;
+		int AteamPoints = 0;
+		int BteamPoints = 0;
 
 		BoardCount t1Counts = new BoardCount(0, 0, 0, 0);
 		BoardCount t2Counts = new BoardCount(0, 0, 0, 0);
 
-		Board board = new Board(AteamName, BteamName, AplayerNames, BplayerNames, null, t1Counts, t2Counts);
+		Board board = new Board(t1, t2, t1Counts, t2Counts);
 
 		boolean flag = false;
 
@@ -37,61 +34,85 @@ public class Play implements PlayAction {
 		while (true) {
 
 			if (flag == false) {
-				System.out.println(count + "초 " + AteamName + " 공격 ");
+				System.out.println("========== " + count + "초 " + AteamName + " 공격 " + "==========");
 				System.out.println();
-				board.setT1Counts(play(AteamName, AplayerNames, AplayerBAs, playerNumber, board.getT1Counts()));
+				board = play(board, playerNumber, flag, count);
+				AteamPoints += board.getT1Counts().getPoints();
 				flag = true;
-
-				System.out.println("t1점수: " + board.getT1Counts().getPoints());
-				System.out.println("t1투구: " + board.getT1Counts().getPitchings());
-				System.out.println("t1삼진: " + board.getT1Counts().getThreeOuts());
-				System.out.println("t1안타: " + board.getT1Counts().getHits());
 			}
 
 			if (flag == true) {
-				System.out.println(count + "말 " + BteamName + " 공격 ");
+				System.out.println("========== " + count + "말 " + BteamName + " 공격 " + "==========");
 				System.out.println();
-				board.setT2Counts(play(BteamName, BplayerNames, BplayerBAs, playerNumber, board.getT2Counts()));
+				board = play(board, playerNumber, flag, count);
+				BteamPoints += board.getT2Counts().getPoints();
 				flag = false;
 				count++;
-
-				System.out.println("t2점수: " + board.getT2Counts().getPoints());
-				System.out.println("t2투구: " + board.getT2Counts().getPitchings());
-				System.out.println("t2삼진: " + board.getT2Counts().getThreeOuts());
-				System.out.println("t2안타: " + board.getT2Counts().getHits());
-
 			}
 
-			if (count == 3)
+			if (count == 7)
 				break;
 
 		}
-//		endGame(AteamName, BteamName, AteamPoints, BteamPoints);
+
+		endGame(AteamName, BteamName, AteamPoints, BteamPoints);
 
 	}
 
 	@Override
-	public BoardCount play(String teamName, String[] playerNames, double[] playerBAs, int playerNumber,
-			BoardCount boardCount) {
+	public Board play(Board board, int playerNumber, boolean flag, int count) {
 
-		Score score = new Score(0, 0, 0, 0, 0);
-		BoardCount bc = doBatting(playerNames, playerBAs, score, playerNumber, boardCount);
-		return bc;
+		String[] playerNames;
+		double[] playerBAs;
+
+		if (flag == false) {
+			// 초
+			playerNames = board.getT1().getPlayerName();
+			playerBAs = board.getT1().getPlayerBA();
+
+			board = doBatting(playerNames, playerBAs, playerNumber, flag, count, board);
+		} else {
+			// 말
+
+			playerNames = board.getT2().getPlayerName();
+			playerBAs = board.getT2().getPlayerBA();
+
+			board = doBatting(playerNames, playerBAs, playerNumber, flag, count, board);
+		}
+
+		return board;
 
 	}
 
 	@Override
-	public BoardCount doBatting(String[] playerNames, double[] playerBAs, Score score, int playerNumber,
-			BoardCount boardCount) {
-		int strike = score.getStrike();
-		int ball = score.getBall();
-		int out = score.getOut();
-		int hit = score.getHit();
+	public Board doBatting(String[] playerNames, double[] playerBAs, int playerNumber, boolean flag, int count,
+			Board board) {
 
-		int point = boardCount.getPoints();
-		int pitchings = boardCount.getPitchings();
-		int threeOuts = boardCount.getThreeOuts();
-		int hits = boardCount.getHits();
+		// 6회말 종료조건
+		earlyStop(count, flag, board);
+
+		Out print = new Out();
+
+		int strike = 0;
+		int ball = 0;
+		int out = 0;
+		int hit = 0;
+
+		int pitchings, threeOuts, hits, points;
+
+		if (flag == false) {
+			pitchings = board.getT1Counts().getPitchings();
+			threeOuts = board.getT1Counts().getThreeOuts();
+			hits = board.getT1Counts().getHits();
+			points = 0;
+
+		} else {
+			pitchings = board.getT1Counts().getPitchings();
+			threeOuts = board.getT1Counts().getThreeOuts();
+			hits = board.getT1Counts().getHits();
+			points = 0;
+
+		}
 
 		int nextPlayer = 0;
 
@@ -104,6 +125,14 @@ public class Play implements PlayAction {
 			String playerName = playerNames[nextPlayer];
 			double playerBA = playerBAs[nextPlayer];
 
+			if (flag == false) {
+				board.setT1Counts(new BoardCount(pitchings, threeOuts, hits, points));
+			} else {
+				board.setT2Counts(new BoardCount(pitchings, threeOuts, hits, points));
+			}
+
+			print.printBoard(board, new Score(strike, ball, out, hit), count, flag);
+
 			System.out.println(nextPlayer + 1 + "번 " + playerName);
 
 			int random = rollDice(playerBA);
@@ -114,9 +143,9 @@ public class Play implements PlayAction {
 				// strike
 				strike++;
 				pitchings++;
+
 				System.out.println("스트라이크!");
-				System.out.println(strike + "S " + ball + "B " + out + "O");
-				System.out.println();
+				print.printSBO(strike, ball, threeOuts);
 				break;
 
 			case 2:
@@ -124,8 +153,7 @@ public class Play implements PlayAction {
 				ball++;
 				pitchings++;
 				System.out.println("볼!");
-				System.out.println(strike + "S " + ball + "B " + out + "O");
-				System.out.println();
+				print.printSBO(strike, ball, threeOuts);
 				break;
 
 			case 3:
@@ -137,8 +165,7 @@ public class Play implements PlayAction {
 					strike = 0;
 					ball = 0;
 					nextPlayer++;
-					System.out.println(strike + "S " + ball + "B " + out + "O");
-					System.out.println();
+					print.printSBO(strike, ball, threeOuts);
 					break;
 
 				} else {
@@ -147,8 +174,7 @@ public class Play implements PlayAction {
 					System.out.println("아웃!");
 					strike = 0;
 					ball = 0;
-					System.out.println(strike + "S " + ball + "B " + out + "O");
-					System.out.println();
+					print.printSBO(strike, ball, threeOuts);
 					break;
 
 				}
@@ -162,8 +188,7 @@ public class Play implements PlayAction {
 				strike = 0;
 				ball = 0;
 				nextPlayer++;
-				System.out.println(strike + "S " + ball + "B " + out + "O");
-				System.out.println();
+				print.printSBO(strike, ball, threeOuts);
 				break;
 
 			}
@@ -176,8 +201,7 @@ public class Play implements PlayAction {
 					System.out.println("3 스트라이크 아웃!");
 					strike = 0;
 					ball = 0;
-					System.out.println(strike + "S " + ball + "B " + out + "O");
-					System.out.println();
+					print.printSBO(strike, ball, threeOuts);
 					break;
 
 				} else {
@@ -201,19 +225,34 @@ public class Play implements PlayAction {
 			}
 
 			if (hit == 4) {
-				point++;
+				points++;
 				System.out.println("득점하였습니다.");
-				System.out.println("현재 점수: " + point);
+				System.out.println("현재 점수: " + points);
 				System.out.println();
 				hit = 3;
 			}
 
+			if (skip == 0) {
+				System.out.println("" + "다음 투구 보기(enter) or 스킵하고 X회말 후 투구보기(숫자+enter)");
+				String userInput = DataInputUtil.getInput();
+
+				if (userInput.equals("")) {
+					continue;
+				} else if ((Integer.parseInt(userInput) > 0 && Integer.parseInt(userInput) < 7
+						&& Integer.parseInt(userInput) >= count)) {
+					skip = Integer.parseInt(userInput);
+				}
+			}
+
+		}
+		if (flag == true) {
+			skip--;
+		}
+		if (skip < 0) {
+			skip = 0;
 		}
 
-		BoardCount bc = new BoardCount(point, pitchings, threeOuts, hits);
-
-		// return point;
-		return bc;
+		return board;
 	}
 
 	@Override
@@ -285,6 +324,15 @@ public class Play implements PlayAction {
 		}
 		System.out.println("Thank You!");
 		System.out.println();
+	}
+
+	@Override
+	public Board earlyStop(int count, boolean flag, Board board) {
+
+		if (count == 6 && flag == true && board.getT2Counts().getPoints() > board.getT1Counts().getPoints()) {
+			return board;
+		}
+		return board;
 	}
 
 }

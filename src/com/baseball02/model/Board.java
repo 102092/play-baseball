@@ -1,46 +1,25 @@
 package com.baseball02.model;
 
 public class Board {
-	private String t1Name;
-	private String t2Name;
-
-	private String[] t1Player;
-	private String[] t2Player;
-
-	private Score score;
+	private TeamData t1;
+	private TeamData t2;
 
 	private BoardCount t1Counts;
 	private BoardCount t2Counts;
 
-	public Board(String t1Name, String t2Name, String[] t1Player, String[] t2Player, Score score, BoardCount t1Counts,
-			BoardCount t2Counts) {
-		this.t1Name = t1Name;
-		this.t2Name = t2Name;
-		this.t1Player = t1Player;
-		this.t2Player = t2Player;
-		this.score = score;
+	public Board(TeamData t1, TeamData t2, BoardCount t1Counts, BoardCount t2Counts) {
+		this.t1 = t1;
+		this.t2 = t2;
 		this.t1Counts = t1Counts;
 		this.t2Counts = t2Counts;
 	}
 
-	public String getT1Name() {
-		return t1Name;
+	public TeamData getT1() {
+		return t1;
 	}
 
-	public String getT2Name() {
-		return t2Name;
-	}
-
-	public String[] getT1Player() {
-		return t1Player;
-	}
-
-	public String[] getT2Player() {
-		return t2Player;
-	}
-
-	public Score getScore() {
-		return score;
+	public TeamData getT2() {
+		return t2;
 	}
 
 	public BoardCount getT1Counts() {
@@ -49,10 +28,6 @@ public class Board {
 
 	public BoardCount getT2Counts() {
 		return t2Counts;
-	}
-
-	public void setScore(Score score) {
-		this.score = score;
 	}
 
 	public void setT1Counts(BoardCount t1Counts) {
