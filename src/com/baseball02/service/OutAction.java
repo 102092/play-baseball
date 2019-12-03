@@ -5,7 +5,7 @@ import com.baseball02.model.Score;
 import com.baseball02.model.TeamData;
 
 public interface OutAction {
-	
+
 	void printSBO(int strike, int ball, int out);
 
 	void selectMessage();
@@ -17,4 +17,6 @@ public interface OutAction {
 	void printTeamData(TeamData td, int playerNumber);
 
 	void printBoard(Board board, Score score, int count, boolean flag);
+
+	void endGame(String ateamName, String bteamName, int ateamPoints, int bteamPoints);
 }

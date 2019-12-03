@@ -1,7 +1,6 @@
 package com.baseball02.service;
 
 import com.baseball02.model.Board;
-import com.baseball02.model.BoardCount;
 import com.baseball02.model.TeamData;
 
 public interface PlayAction {
@@ -13,9 +12,7 @@ public interface PlayAction {
 	Board doBatting(String[] playerNames, double[] playerBAs, int playerNumber, boolean flag, int count, Board board);
 
 	int rollDice(double ba);
-	
-	Board earlyStop(int count, boolean flag, Board board);
 
-	void endGame(String ateamName, String bteamName, int ateamPoints, int bteamPoints);
+	Board earlyStop(int count, boolean flag, Board board);
 
 }

@@ -10,10 +10,11 @@ import com.baseball02.util.DataInputUtil;
 
 public class Input implements InputAction {
 
+	BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+
 	@Override
 	public TeamData input(int playerNumber) throws IOException {
 
-		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
 		String[] playerNames = new String[playerNumber];
 		double[] playerBAs = new double[playerNumber];
 		String input;

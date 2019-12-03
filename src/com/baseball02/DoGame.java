@@ -15,15 +15,18 @@ public class DoGame {
 
 		String tn1 = "마우스";
 		String[] pn1 = { "지수", "호리", "통닭", "골드", "피자", "쭈꾸", "수리", "노트", "구파" };
-		double[] pba1 = { 0.234, 0.332, 0.221, 0.300, 0.198, 0.287, 0.119, 0.223, 0.154 };
+		double[] pba1 = { 0.234, 0.332, 0.221, 0.304, 0.198, 0.287, 0.119, 0.223, 0.154 };
 
 		String tn2 = "고양이";
 		String[] pn2 = { "민수", "재후", "고일", "고이", "고삼", "고사", "고오", "고육", "고칠" };
-		double[] pba2 = { 0.301, 0.198, 0.341, 0.412, 0.200, 0.108, 0.209, 0.308, 0.018 };
+		double[] pba2 = { 0.301, 0.198, 0.341, 0.412, 0.207, 0.108, 0.209, 0.308, 0.018 };
 
-		// 팀 데이터 셋
 		TeamData t1 = new TeamData(tn1, pn1, pba1);
 		TeamData t2 = new TeamData(tn2, pn2, pba2);
+
+		// 팀 데이터 셋
+//		TeamData t1 = new TeamData();
+//		TeamData t2 = new TeamData();
 
 		// Action 셋
 		Input in = new Input();

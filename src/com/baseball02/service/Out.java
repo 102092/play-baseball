@@ -57,15 +57,15 @@ public class Out implements OutAction {
 	@Override
 	public void printBoard(Board b, Score s, int c, boolean flag) {
 
+		int t1Sum = 0;
+		int t2Sum = 0;
+
 		if (flag == false) {
 			t1Points[c - 1] = b.getT1Counts().getPoints();
 
 		} else {
 			t2Points[c - 1] = b.getT2Counts().getPoints();
 		}
-
-		int t1Sum = 0;
-		int t2Sum = 0;
 
 		for (int i = 0; i < t1Points.length; i++) {
 			t1Sum += t1Points[i];
@@ -90,26 +90,54 @@ public class Out implements OutAction {
 		System.out.println("|  " + t2Sum);
 
 		System.out.println("|  ");
-		System.out.println("|  " + b.getT1().getTeamName() + "\t\t" + b.getT2().getTeamName());
+		System.out.println("|  " + b.getT1().getTeamName() + "\t\t\t" + b.getT2().getTeamName());
 
 		for (int i = 0; i < b.getT1().getPlayerName().length; i++) {
-			System.out.println("| " + (i + 1) + ". " + b.getT1().getPlayerName()[i] + "\t\t" + (i + 1) + ". "
-					+ b.getT2().getPlayerName()[i]);
+
+			if (i != 3 && i != 4 && i != 5) {
+				System.out.println("| " + (i + 1) + ". " + b.getT1().getPlayerName()[i] + "\t\t\t" + (i + 1) + ". "
+						+ b.getT2().getPlayerName()[i]);
+
+			} else if (i == 3) {
+				System.out.println("| " + (i + 1) + ". " + b.getT1().getPlayerName()[i] + "       S " + s.getStrike()
+						+ "\t" + +(i + 1) + ". " + b.getT2().getPlayerName()[i]);
+			} else if (i == 4) {
+				System.out.println("| " + (i + 1) + ". " + b.getT1().getPlayerName()[i] + "       B " + s.getBall()
+						+ "\t" + +(i + 1) + ". " + b.getT2().getPlayerName()[i]);
+			} else if (i == 5) {
+				System.out.println("| " + (i + 1) + ". " + b.getT1().getPlayerName()[i] + "       O " + s.getOut()
+						+ "\t" + +(i + 1) + ". " + b.getT2().getPlayerName()[i]);
+			}
+
 		}
 
-		System.out.println("|\t" + "  S " + s.getStrike());
-		System.out.println("|\t" + "  B " + s.getBall());
-		System.out.println("|\t" + "  O " + s.getOut());
-
+		System.out.println("|");
+		System.out.println("|");
+		System.out
+				.println("| 투구: " + b.getT1Counts().getPitchings() + "\t\t" + "투구: " + b.getT2Counts().getPitchings());
 		System.out.println(
-				"| 투구: " + b.getT1Counts().getPitchings() + "        " + " 투구: " + b.getT2Counts().getPitchings());
-		System.out.println(
-				"| 삼진: " + b.getT1Counts().getThreeOuts() + "        " + " 삼진: " + b.getT2Counts().getThreeOuts());
-		System.out.println("| 안타: " + b.getT1Counts().getHits() + "        " + " 안타: " + b.getT2Counts().getHits());
-
+				"| 삼진: " + b.getT1Counts().getThreeOuts() + "\t\t\t" + "삼진: " + b.getT2Counts().getThreeOuts());
+		System.out.println("| 안타: " + b.getT1Counts().getHits() + "\t\t" + "안타: " + b.getT2Counts().getHits());
 		System.out.println("+--------------------------------+");
 		System.out.println();
 
+	}
+
+	@Override
+	public void endGame(String ateamName, String bteamName, int ateamPoints, int bteamPoints) {
+
+		System.out.println("경기 종료");
+		System.out.println();
+		System.out.println(ateamName + " VS " + bteamName);
+
+		if (ateamPoints == bteamPoints) {
+			System.out.println(ateamPoints + " : " + bteamPoints);
+			System.out.println("무승부! ");
+		} else {
+			System.out.println(ateamPoints + " : " + bteamPoints);
+		}
+		System.out.println("Thank You!");
+		System.out.println();
 	}
 
 }

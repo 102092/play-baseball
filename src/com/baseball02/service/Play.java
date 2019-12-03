@@ -11,6 +11,8 @@ import com.baseball02.util.DataInputUtil;
 public class Play implements PlayAction {
 
 	private int skip = 0;
+	private Random r = new Random();
+	private Out print = new Out();
 
 	@Override
 	public void setData(TeamData t1, TeamData t2, int playerNumber) {
@@ -31,7 +33,7 @@ public class Play implements PlayAction {
 		// 회차
 		int count = 1;
 
-		while (true) {
+		while (count != 7) {
 
 			if (flag == false) {
 				System.out.println("========== " + count + "초 " + AteamName + " 공격 " + "==========");
@@ -41,7 +43,7 @@ public class Play implements PlayAction {
 				flag = true;
 			}
 
-			if (flag == true) {
+			else if (flag == true) {
 				System.out.println("========== " + count + "말 " + BteamName + " 공격 " + "==========");
 				System.out.println();
 				board = play(board, playerNumber, flag, count);
@@ -49,13 +51,9 @@ public class Play implements PlayAction {
 				flag = false;
 				count++;
 			}
-
-			if (count == 7)
-				break;
-
 		}
 
-		endGame(AteamName, BteamName, AteamPoints, BteamPoints);
+		print.endGame(AteamName, BteamName, AteamPoints, BteamPoints);
 
 	}
 
@@ -91,13 +89,13 @@ public class Play implements PlayAction {
 		// 6회말 종료조건
 		earlyStop(count, flag, board);
 
-		Out print = new Out();
-
+		// Score 변수 초기화
 		int strike = 0;
 		int ball = 0;
 		int out = 0;
 		int hit = 0;
 
+		// Board Count 변수 초기화
 		int pitchings, threeOuts, hits, points;
 
 		if (flag == false) {
@@ -143,9 +141,8 @@ public class Play implements PlayAction {
 				// strike
 				strike++;
 				pitchings++;
-
 				System.out.println("스트라이크!");
-				print.printSBO(strike, ball, threeOuts);
+				print.printSBO(strike, ball, out);
 				break;
 
 			case 2:
@@ -153,7 +150,7 @@ public class Play implements PlayAction {
 				ball++;
 				pitchings++;
 				System.out.println("볼!");
-				print.printSBO(strike, ball, threeOuts);
+				print.printSBO(strike, ball, out);
 				break;
 
 			case 3:
@@ -162,19 +159,19 @@ public class Play implements PlayAction {
 					out++;
 					pitchings++;
 					System.out.println("아웃! 다음 타자가 타석에 입장했습니다");
+					print.printSBO(strike, ball, out);
 					strike = 0;
 					ball = 0;
 					nextPlayer++;
-					print.printSBO(strike, ball, threeOuts);
 					break;
 
 				} else {
 					out++;
 					pitchings++;
 					System.out.println("아웃!");
+					print.printSBO(strike, ball, out);
 					strike = 0;
 					ball = 0;
-					print.printSBO(strike, ball, threeOuts);
 					break;
 
 				}
@@ -185,10 +182,10 @@ public class Play implements PlayAction {
 				pitchings++;
 				hits++;
 				System.out.println("안타! 다음 타자가 타석에 입장했습니다");
+				print.printSBO(strike, ball, out);
 				strike = 0;
 				ball = 0;
 				nextPlayer++;
-				print.printSBO(strike, ball, threeOuts);
 				break;
 
 			}
@@ -199,9 +196,9 @@ public class Play implements PlayAction {
 
 				if (out == 3) {
 					System.out.println("3 스트라이크 아웃!");
+					print.printSBO(strike, ball, out);
 					strike = 0;
 					ball = 0;
-					print.printSBO(strike, ball, threeOuts);
 					break;
 
 				} else {
@@ -217,6 +214,7 @@ public class Play implements PlayAction {
 			if (ball == 4) {
 				hit++;
 				System.out.println("4 볼!");
+				print.printSBO(strike, ball, out);
 				System.out.println("다음 타자가 타석에 입장했습니다");
 				System.out.println();
 				nextPlayer++;
@@ -240,11 +238,19 @@ public class Play implements PlayAction {
 					continue;
 				} else if ((Integer.parseInt(userInput) > 0 && Integer.parseInt(userInput) < 7
 						&& Integer.parseInt(userInput) >= count)) {
-					skip = Integer.parseInt(userInput);
+					if (count > 1) {
+						skip = Integer.parseInt(userInput) - count;
+						skip++;
+					} else {
+						skip = Integer.parseInt(userInput);
+					}
+
 				}
 			}
 
 		}
+
+		// 회차 스킵 기능
 		if (flag == true) {
 			skip--;
 		}
@@ -258,16 +264,15 @@ public class Play implements PlayAction {
 	@Override
 	public int rollDice(double ba) {
 
-		Random r = new Random();
-
-		double hitProbability = ba; // 0.499
-		double sbProbability = (1 - ba) / 2 - 0.05; // 0.200
+		double hitProbability = ba;
+		double sbProbability = (1 - ba) / 2 - 0.05;
 		double outProbability = 0.100;
 		boolean isGet = false;
 		int result = 0;
 
 		while (isGet == false) {
 
+			// 25% 확률 1~4
 			int temp = r.nextInt(4) + 1;
 
 			switch (temp) {
@@ -307,23 +312,6 @@ public class Play implements PlayAction {
 			}
 		}
 		return result;
-	}
-
-	@Override
-	public void endGame(String ateamName, String bteamName, int ateamPoints, int bteamPoints) {
-
-		System.out.println("경기 종료");
-		System.out.println();
-		System.out.println(ateamName + " VS " + bteamName);
-
-		if (ateamPoints == bteamPoints) {
-			System.out.println(ateamPoints + " : " + bteamPoints);
-			System.out.println("무승부! ");
-		} else {
-			System.out.println(ateamPoints + " : " + bteamPoints);
-		}
-		System.out.println("Thank You!");
-		System.out.println();
 	}
 
 	@Override
