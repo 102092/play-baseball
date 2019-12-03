@@ -44,7 +44,7 @@ public class Play implements PlayAction {
 				count++;
 			}
 
-			if (count == 2)
+			if (count == 7)
 				break;
 
 		}

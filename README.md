@@ -1,28 +1,12 @@
 # play-baseball
 
 - 언어 : Java (openjdk 12.0.2)
+
 - IDE : Eclipse
+
 - 운영체제 : Mac
 
-
-
-## step1
-
-### 클린 코딩
-
-- `setGame()`, `startGame()`, `endGame()`으로 기능별 세분화
-  - `setGame` : `Score` 객체 생성 및 초기화
-  - `startGame` : play baseball game
-  - `endGame` : game동안 달성한 hit의 갯수를 출력
-
-### 요구 사항
-
-- `while` ,`swich`문 사용
-- (4), (5) 시 어떤 정확히 출력
-  - `                System.out.println("3 스트라이크!");`
-  - `System.out.println("4 볼!");`
-
-
+  
 
 ## step2
 
@@ -60,3 +44,16 @@
 
 - 회차는 1회말(총 2게임)까지만
 - 시합기능을 좀 더 단순화 시킬 수 있을 것 같다.
+
+
+
+### 설명
+
+- `DoGame` Class 실행 - > 메뉴 등장
+  - 1번 데이터 입력 시 팀정보 -> 1~9번 타자 입력 순으로 나타남
+  - `비비, 0.123` 
+    - teamName nullcheck
+    - 타자 정보는 위와 같은 방식을 따라야만 정상적으로 입력할 수 있음.
+    - , 로 구분하고, parsing 하여 각각 배열에 저장됨.
+
+- **3번** 입력시 자동으로 게임 실행(6회말까지)

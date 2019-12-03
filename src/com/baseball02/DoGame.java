@@ -9,7 +9,7 @@ import com.baseball02.service.Out;
 
 public class DoGame {
 
-	final static int TOTAL = 2;
+	final static int TOTAL = 9;
 
 	public static void main(String[] args) throws IOException {
 
